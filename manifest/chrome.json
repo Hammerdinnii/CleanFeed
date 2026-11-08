@@ -1,0 +1,11 @@
+{
+  "minimum_chrome_version": "121",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options/options.html",
+  "permissions": ["offscreen"],
+  "content_scripts_extra": {
+    "match_origin_as_fallback": true
+  }
+}

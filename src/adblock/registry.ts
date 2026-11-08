@@ -1,0 +1,166 @@
+import type { Subscription } from '../shared/types';
+
+/**
+ * Default filter-list subscriptions. `bundled: true` lists are compiled into
+ * static DNR rulesets at build time when a snapshot is available
+ * (`npm run fetch-lists`), so blocking works from the first page load; all of
+ * them auto-update at runtime from their upstream URLs.
+ *
+ * Lists are fetched by the extension directly from their publishers. No
+ * browsing data is attached to those requests.
+ */
+export const BASE_LIST_ID = 'cleanfeed-base';
+
+export const DEFAULT_SUBSCRIPTIONS: Subscription[] = [
+  {
+    id: BASE_LIST_ID,
+    name: 'CleanFeed Base',
+    url: null, // ships with the extension, updated with releases
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'ads',
+  },
+  {
+    id: 'easylist',
+    name: 'EasyList',
+    url: 'https://easylist.to/easylist/easylist.txt',
+    mirrors: ['https://easylist-downloads.adblockplus.org/easylist.txt', 'https://cdn.jsdelivr.net/gh/easylist/easylist@gh-pages/easylist.txt'],
+    homepage: 'https://easylist.to/',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'ads',
+  },
+  {
+    id: 'easyprivacy',
+    name: 'EasyPrivacy',
+    url: 'https://easylist.to/easylist/easyprivacy.txt',
+    mirrors: ['https://easylist-downloads.adblockplus.org/easyprivacy.txt', 'https://cdn.jsdelivr.net/gh/easylist/easylist@gh-pages/easyprivacy.txt'],
+    homepage: 'https://easylist.to/',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'privacy',
+  },
+  {
+    id: 'ubo-filters',
+    name: 'uBlock filters (ads & anti-adblock)',
+    url: 'https://ublockorigin.github.io/uAssets/filters/filters.txt',
+    mirrors: ['https://cdn.jsdelivr.net/gh/uBlockOrigin/uAssets@master/filters/filters.txt'],
+    homepage: 'https://github.com/uBlockOrigin/uAssets',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'ads',
+  },
+  {
+    id: 'ubo-privacy',
+    name: 'uBlock filters – Privacy',
+    url: 'https://ublockorigin.github.io/uAssets/filters/privacy.txt',
+    mirrors: ['https://cdn.jsdelivr.net/gh/uBlockOrigin/uAssets@master/filters/privacy.txt'],
+    homepage: 'https://github.com/uBlockOrigin/uAssets',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'privacy',
+  },
+  {
+    id: 'ubo-unbreak',
+    name: 'uBlock filters – Unbreak',
+    url: 'https://ublockorigin.github.io/uAssets/filters/unbreak.txt',
+    mirrors: ['https://cdn.jsdelivr.net/gh/uBlockOrigin/uAssets@master/filters/unbreak.txt'],
+    homepage: 'https://github.com/uBlockOrigin/uAssets',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'ads',
+  },
+  {
+    id: 'ubo-quick-fixes',
+    name: 'uBlock filters – Quick fixes',
+    url: 'https://ublockorigin.github.io/uAssets/filters/quick-fixes.txt',
+    mirrors: ['https://cdn.jsdelivr.net/gh/uBlockOrigin/uAssets@master/filters/quick-fixes.txt'],
+    homepage: 'https://github.com/uBlockOrigin/uAssets',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'ads',
+  },
+  {
+    id: 'ubo-badware',
+    name: 'uBlock filters – Badware risks',
+    url: 'https://ublockorigin.github.io/uAssets/filters/badware.txt',
+    mirrors: ['https://cdn.jsdelivr.net/gh/uBlockOrigin/uAssets@master/filters/badware.txt'],
+    homepage: 'https://github.com/uBlockOrigin/uAssets',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'security',
+  },
+  {
+    id: 'peter-lowe',
+    name: "Peter Lowe's Ad and tracking server list",
+    url: 'https://pgl.yoyo.org/adservers/serverlist.php?hostformat=adblockplus&showintro=1&mimetype=plaintext',
+    homepage: 'https://pgl.yoyo.org/adservers/',
+    enabled: true,
+    builtin: true,
+    bundled: true,
+    category: 'ads',
+  },
+  {
+    id: 'adguard-base',
+    name: 'AdGuard Base (without EasyList)',
+    url: 'https://filters.adtidy.org/extension/ublock/filters/2_without_easylist.txt',
+    homepage: 'https://github.com/AdguardTeam/AdguardFilters',
+    enabled: false,
+    builtin: true,
+    category: 'ads',
+    aggressive: true,
+  },
+  {
+    id: 'adguard-tracking',
+    name: 'AdGuard Tracking Protection',
+    url: 'https://filters.adtidy.org/extension/ublock/filters/3.txt',
+    homepage: 'https://github.com/AdguardTeam/AdguardFilters',
+    enabled: false,
+    builtin: true,
+    category: 'privacy',
+    aggressive: true,
+  },
+  {
+    id: 'fanboy-annoyance',
+    name: "Fanboy's Annoyance List",
+    url: 'https://secure.fanboy.co.nz/fanboy-annoyance.txt',
+    mirrors: ['https://easylist-downloads.adblockplus.org/fanboy-annoyance.txt'],
+    homepage: 'https://easylist.to/',
+    enabled: false,
+    builtin: true,
+    category: 'annoyances',
+    aggressive: true,
+  },
+  {
+    id: 'easylist-cookie',
+    name: 'EasyList Cookie List',
+    url: 'https://secure.fanboy.co.nz/fanboy-cookiemonster.txt',
+    mirrors: ['https://easylist-downloads.adblockplus.org/easylist-cookie.txt'],
+    homepage: 'https://easylist.to/',
+    enabled: false,
+    builtin: true,
+    category: 'annoyances',
+    aggressive: true,
+  },
+  {
+    id: 'ubo-annoyances',
+    name: 'uBlock filters – Annoyances',
+    url: 'https://ublockorigin.github.io/uAssets/filters/annoyances.txt',
+    mirrors: ['https://cdn.jsdelivr.net/gh/uBlockOrigin/uAssets@master/filters/annoyances.txt'],
+    homepage: 'https://github.com/uBlockOrigin/uAssets',
+    enabled: false,
+    builtin: true,
+    category: 'annoyances',
+    aggressive: true,
+  },
+];
+
+export const USER_LIST_ID = 'user-filters';

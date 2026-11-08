@@ -1,0 +1,376 @@
+[Adblock Plus 2.0]
+! Title: CleanFeed Base
+! Description: Built-in starter list shipped with CleanFeed. Covers the most common ad
+!   and tracking networks, feed ads on major sites, YouTube video ads and tracking
+!   parameters. It works offline and is complemented by EasyList / EasyPrivacy /
+!   uBlock filters once those download.
+! Expires: 7 days
+! Homepage: https://github.com/hammerdinnii/CleanFeed
+! License: GPL-3.0-or-later
+!
+! ============================================================================
+! Ad networks & exchanges
+! ============================================================================
+||doubleclick.net^
+||googlesyndication.com^
+||googleadservices.com^
+||googletagservices.com^
+||adservice.google.com^
+||2mdn.net^
+||adnxs.com^
+||adnxs-simple.com^
+||adsrvr.org^
+||criteo.com^
+||criteo.net^
+||taboola.com^
+||taboolasyndication.com^
+||outbrain.com^
+||outbrainimg.com^
+||amazon-adsystem.com^
+||adform.net^
+||adroll.com^
+||rubiconproject.com^
+||pubmatic.com^
+||openx.net^
+||casalemedia.com^
+||indexww.com^
+||smartadserver.com^
+||yieldmo.com^
+||sharethrough.com^
+||teads.tv^
+||33across.com^
+||media.net^
+||bidswitch.net^
+||contextweb.com^
+||advertising.com^
+||serving-sys.com^
+||adcolony.com^
+||lijit.com^
+||sovrn.com^
+||gumgum.com^
+||kargo.com^
+||triplelift.com^
+||3lift.com^
+||adkernel.com^
+||emxdgt.com^
+||onetag-sys.com^
+||sonobi.com^
+||undertone.com^
+||zemanta.com^
+||nativo.com^
+||plista.com^
+||ligatus.com^
+||adhese.com^
+||improvedigital.com^
+||yieldlab.net^
+||adscale.de^
+||adition.com^
+||smartclip.net^
+||stickyadstv.com^
+||spotxchange.com^
+||springserve.com^
+||revcontent.com^
+||mgid.com^
+||zergnet.com^
+||adblade.com^
+||bidvertiser.com^
+||infolinks.com^
+||yieldlove.com^
+||mathtag.com^
+||turn.com^
+||rfihub.com^
+||atdmt.com^
+||adtechus.com^
+||adsymptotic.com^
+||moatads.com^
+||adsafeprotected.com^
+||doubleverify.com^
+||innovid.com^
+||flashtalking.com^
+||adgrx.com^
+||adlightning.com^
+||confiant-integrations.net^
+||adthrive.com^$third-party
+||ezoic.net^$third-party
+||mediavine.com^$third-party
+||freestar.io^$third-party
+||pubnation.com^$third-party
+||ad-delivery.net^
+||adzerk.net^
+||carbonads.net^$third-party
+||buysellads.com^$third-party
+||servedby-buysellads.com^
+||ads.yahoo.com^
+||ads.yieldmo.com^
+||ads.pubmatic.com^
+||ads.linkedin.com^
+||ads-twitter.com^
+||ads.reddit.com^
+||ads.tiktok.com^
+||adsappier.com^
+!
+! ============================================================================
+! Trackers & analytics
+! ============================================================================
+||scorecardresearch.com^
+||quantserve.com^
+||quantcount.com^
+||demdex.net^
+||omtrdc.net^
+||everesttech.net^
+||bluekai.com^
+||krxd.net^
+||exelator.com^
+||rlcdn.com^
+||agkn.com^
+||tapad.com^
+||liadm.com^
+||id5-sync.com^
+||crwdcntrl.net^
+||eyeota.net^
+||bounceexchange.com^
+||permutive.com^$third-party
+||hotjar.com^
+||hotjar.io^
+||mouseflow.com^
+||fullstory.com^
+||clarity.ms^
+||crazyegg.com^
+||luckyorange.com^
+||inspectlet.com^
+||mc.yandex.ru^
+||analytics.yahoo.com^
+||bat.bing.com^
+||px.ads.linkedin.com^
+||analytics.tiktok.com^
+||analytics.twitter.com^
+||alb.reddit.com^
+||events.redditmedia.com^
+||ct.pinterest.com^
+||sc-static.net/scevent.min.js
+||tr.snapchat.com^
+||connect.facebook.net/*/fbevents.js
+||facebook.com/tr^$image,script,ping
+||facebook.com/tr/^
+||google-analytics.com/analytics.js$script,redirect=google-analytics_analytics.js
+||google-analytics.com/ga.js$script,redirect=google-analytics_ga.js
+||google-analytics.com/collect^
+||google-analytics.com/j/collect^
+||google-analytics.com/g/collect^
+||region1.google-analytics.com/g/collect^
+||stats.g.doubleclick.net^
+||cdn.segment.com/analytics.js/v1/$script,third-party
+||api.segment.io^$third-party
+||nr-data.net^$third-party
+||newrelic.com/*/nr-*.js$third-party
+||chartbeat.com^$third-party
+||chartbeat.net^$third-party
+||parsely.com/keys/$third-party
+||pixel.wp.com^
+||stats.wp.com^$third-party
+||mixpanel.com/track^
+||api-js.mixpanel.com/track^
+||heapanalytics.com^$third-party
+||amplitude.com/2/httpapi$third-party
+||branch.io^$third-party,image
+||adobedtm.com^$third-party,script
+||tealiumiq.com^$third-party
+||tiqcdn.com^$third-party,script
+||scorecardresearch.com/beacon.js$script,redirect=scorecardresearch_beacon.js,important
+!
+! ============================================================================
+! Malvertising / popunder networks (navigation + popup)
+! ============================================================================
+||popads.net^$all
+||popcash.net^$all
+||propellerads.com^$all
+||adsterra.com^$all
+||onclickads.net^$all
+||onclkds.com^$all
+||exoclick.com^$all
+||exosrv.com^$all
+||juicyads.com^$all
+||clickadu.com^$all
+||hilltopads.net^$all
+||popunder.net^$all
+||trafficjunky.net^$all
+||adcash.com^$all
+||admaven.com^$all
+||ad-maven.com^$all
+||mondiad.net^$all
+||richpush.co^$all
+||pushame.com^$all
+||evadav.com^$all
+!
+! ============================================================================
+! Tracking parameters
+! ============================================================================
+$removeparam=utm_source
+$removeparam=utm_medium
+$removeparam=utm_campaign
+$removeparam=utm_term
+$removeparam=utm_content
+$removeparam=utm_id
+$removeparam=fbclid
+$removeparam=gclid
+$removeparam=dclid
+$removeparam=gbraid
+$removeparam=wbraid
+$removeparam=msclkid
+$removeparam=mc_eid
+$removeparam=igshid
+$removeparam=yclid
+$removeparam=ttclid
+$removeparam=twclid
+$removeparam=li_fat_id
+$removeparam=_hsenc
+$removeparam=_hsmi
+$removeparam=mkt_tok
+$removeparam=oly_anon_id
+$removeparam=oly_enc_id
+$removeparam=vero_id
+$removeparam=wickedid
+!
+! ============================================================================
+! Generic element hiding
+! ============================================================================
+##.adsbygoogle
+##ins.adsbygoogle
+##div[id^="div-gpt-ad"]
+##iframe[id^="google_ads_iframe"]
+##div[id^="google_ads_iframe"]
+##div[data-google-query-id]
+##[data-ad-slot]
+##[data-adunit]
+##amp-ad
+##amp-embed[type="taboola"]
+##amp-embed[type="outbrain"]
+##iframe[src*="googlesyndication.com"]
+##iframe[src*="doubleclick.net"]
+##a[href^="https://ad.doubleclick.net/"]
+##a[href^="https://adclick.g.doubleclick.net/"]
+##a[href^="https://pubads.g.doubleclick.net/"]
+##.ad-banner
+##.ad-container
+##.ad-slot
+##.ad-wrapper
+##.ad-unit
+##.ad_unit
+##.adunit
+##.advert
+##.advertisement
+##.ads-container
+##.ad-leaderboard
+##.leaderboard-ad
+##.sidebar-ad
+##.top-ad
+##.mpu-ad
+##.ad-mpu
+##.banner-ad
+##.native-ad
+##.ad-header
+##.ad-footer
+##.adWrapper
+##.adContainer
+##.adBox
+##.adsBanner
+##.dfp-ad
+##.gpt-ad
+##.GoogleActiveViewElement
+##.taboola
+##.trc_rbox_container
+##.OUTBRAIN
+##.ob-widget
+##.ob-smartfeed-wrapper
+###taboola-below-article-thumbnails
+###taboola-right-rail-thumbnails
+###ad-banner
+###ad-leaderboard
+###ad-sidebar
+###adsense
+###sponsored-links
+###carbonads
+!
+! ============================================================================
+! YouTube
+! ============================================================================
+||youtube.com/pagead/
+||youtube.com/api/stats/ads
+||youtube.com/get_midroll_
+||youtube.com/ptracking
+||youtube.com/pcs/activeview
+||googlevideo.com/initplayback?*&oad=
+youtube.com##ytd-ad-slot-renderer
+youtube.com##ytd-in-feed-ad-layout-renderer
+youtube.com##ytd-promoted-sparkles-web-renderer
+youtube.com##ytd-promoted-video-renderer
+youtube.com##ytd-display-ad-renderer
+youtube.com##ytd-compact-promoted-video-renderer
+youtube.com##ytd-banner-promo-renderer
+youtube.com##ytd-statement-banner-renderer
+youtube.com##ytd-search-pyv-renderer
+youtube.com##ytd-player-legacy-desktop-watch-ads-renderer
+youtube.com##ytd-merch-shelf-renderer
+youtube.com###masthead-ad
+youtube.com###player-ads
+youtube.com##ytd-rich-item-renderer:has(> #content > ytd-ad-slot-renderer)
+youtube.com##ytd-rich-section-renderer:has(ytd-statement-banner-renderer)
+youtube.com##ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-ads"]
+youtube.com##.ytp-ad-overlay-container
+youtube.com##.ytp-ad-image-overlay
+youtube.com##.ytp-featured-product
+youtube.com##ytd-popup-container > tp-yt-paper-dialog:has(ytd-enforcement-message-view-model)
+youtube.com##tp-yt-iron-overlay-backdrop.opened
+m.youtube.com##ytm-promoted-sparkles-web-renderer
+m.youtube.com##ad-slot-renderer
+m.youtube.com##ytm-companion-ad-renderer
+m.youtube.com##ytm-promoted-video-renderer
+youtube.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds playerResponse.adSlots adPlacements playerAds adSlots)
+youtube.com##+js(set-constant, ytInitialPlayerResponse.adPlacements, undefined)
+youtube.com##+js(set-constant, ytInitialPlayerResponse.adSlots, undefined)
+youtube.com##+js(set-constant, ytInitialPlayerResponse.playerAds, undefined)
+youtube.com##+js(json-prune-fetch-response, playerAds adPlacements adSlots, , propsToMatch, /\/player(?:\?|$)/)
+youtube.com##+js(json-prune-xhr-response, playerAds adPlacements adSlots, , propsToMatch, /\/player(?:\?|$)/)
+youtube-nocookie.com##+js(json-prune, playerResponse.adPlacements playerResponse.playerAds adPlacements playerAds adSlots)
+!
+! ============================================================================
+! Google Search
+! ============================================================================
+google.*###tads
+google.*###tadsb
+google.*###bottomads
+google.*##div[data-text-ad]
+google.*##.commercial-unit-desktop-top
+google.*##.commercial-unit-desktop-rhs
+google.*##.cu-container
+google.*##div[aria-label="Ads"]
+google.*##g-scrolling-carousel:has(.pla-unit)
+!
+! ============================================================================
+! Reddit
+! ============================================================================
+reddit.com##shreddit-ad-post
+reddit.com##shreddit-comments-page-ad
+reddit.com##shreddit-dynamic-ad-link
+reddit.com##shreddit-sidebar-ad
+reddit.com##comment-tree-ad
+reddit.com##.promotedlink
+reddit.com##faceplate-tracker[noun="ad"]
+!
+! ============================================================================
+! LinkedIn
+! ============================================================================
+linkedin.com##.ad-banner-container
+linkedin.com##section.ad-banner-container
+linkedin.com##div[data-ad-banner]
+!
+! ============================================================================
+! X / Twitter (promoted posts are also handled by CleanFeed's feed-ad module)
+! ============================================================================
+x.com,twitter.com##div[data-testid="placementTracking"]:has([data-testid="ad-badge"])
+!
+! ============================================================================
+! Common anti-adblock walls
+! ============================================================================
+##.fc-ab-root
+##body > .fc-dialog-container

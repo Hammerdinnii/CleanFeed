@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.build/
+filters/cache/
+*.zip
+*.xpi
+.DS_Store
+test/e2e/.profile/
+test/e2e/artifacts/
