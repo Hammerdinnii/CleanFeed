@@ -12,13 +12,14 @@ import { applyTheme, formatNumber, h, segmented, timeAgo, toast, toggleRow } fro
 const app = document.getElementById('app')!;
 let tabId = -1;
 
-const LOGO = `<svg viewBox="0 0 32 32" class="logo" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#g)"/><path d="M9 11h14M11 16h10M13.5 21h5" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>`;
-const POWER = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v8"/><path d="M6.3 6.6a8 8 0 1 0 11.4 0"/></svg>`;
+function plural(n: number, word: string): string {
+  return `${formatNumber(n)} ${word}${n === 1 ? '' : 's'}`;
+}
 
-function html(markup: string): Element {
-  const t = document.createElement('template');
-  t.innerHTML = markup; // static, extension-authored markup only
-  return t.content.firstElementChild!;
+/** Clones a static SVG icon from the <template> in popup.html. */
+function icon(name: 'logo' | 'power'): Element {
+  const tpl = document.getElementById('icons') as HTMLTemplateElement;
+  return tpl.content.querySelector(`[data-icon="${name}"]`)!.cloneNode(true) as Element;
 }
 
 async function refresh(): Promise<void> {
@@ -29,13 +30,13 @@ async function refresh(): Promise<void> {
 function render(st: PopupState | null): void {
   app.replaceChildren();
   const powerBtn = h('button', { class: `power${st?.enabled ? '' : ' off'}`, title: st?.enabled ? 'Turn CleanFeed off everywhere' : 'Turn CleanFeed on', 'aria-label': 'Toggle CleanFeed' });
-  powerBtn.append(html(POWER));
+  powerBtn.append(icon('power'));
   powerBtn.addEventListener('click', async () => {
     await updateSettings((s) => (s.enabled = !s.enabled));
     await refresh();
   });
   app.append(
-    h('header', { class: 'top' }, html(LOGO), h('div', { class: 'grow' }, h('div', { class: 'brand' }, 'CleanFeed'), h('div', { class: 'host', title: st?.hostname ?? '' }, st?.hostname || 'No web page')), powerBtn),
+    h('header', { class: 'top' }, icon('logo'), h('div', { class: 'grow' }, h('div', { class: 'brand' }, 'CleanFeed'), h('div', { class: 'host', title: st?.hostname ?? '' }, st?.hostname || 'No web page')), powerBtn),
   );
   if (!st) {
     app.append(h('div', { class: 'notice' }, 'CleanFeed is starting up. Reopen this popup in a moment.'));
@@ -94,7 +95,7 @@ function render(st: PopupState | null): void {
           h('div', { class: 'stat' }, h('b', null, formatNumber(p.elements + p.popups)), h('span', null, 'elements & popups')),
           h('div', { class: 'stat' }, h('b', null, formatNumber(p.ai)), h('span', null, 'AI items flagged')),
         ),
-        h('div', { class: 'today' }, `Today: ${formatNumber(st.counts.today.requests)} requests · ${formatNumber(st.counts.today.elements + st.counts.today.popups)} elements · ${formatNumber(st.counts.today.ai)} AI`),
+        h('div', { class: 'today' }, `Today: ${plural(st.counts.today.requests, 'request')} · ${plural(st.counts.today.elements + st.counts.today.popups, 'element')} · ${formatNumber(st.counts.today.ai)} AI`),
       ),
     );
   }
@@ -158,7 +159,7 @@ function render(st: PopupState | null): void {
       'footer',
       { class: 'foot' },
       h('span', null, '100% on-device · no telemetry'),
-      h('span', { title: `${st.lists.enabled} lists` }, st.lists.updating ? 'Updating lists…' : `Lists updated ${timeAgo(st.lists.lastUpdated)}`),
+      h('span', { title: `${st.lists.enabled} lists` }, st.lists.updating ? 'Updating lists…' : st.lists.lastUpdated ? `Lists updated ${timeAgo(st.lists.lastUpdated)}` : 'Using built-in lists'),
     ),
   );
 }

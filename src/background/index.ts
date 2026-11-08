@@ -98,6 +98,13 @@ async function refreshCommunityListsIfDue(): Promise<void> {
 api.runtime.onInstalled.addListener((details) => {
   void initialize(details.reason).catch((e) => log.error('init failed', e));
   registerContextMenus(true);
+  // Firefox may install MV3 extensions without host access; point the user to the grant button.
+  if (details.reason === 'install') {
+    void api.permissions
+      .contains({ origins: ['<all_urls>'] })
+      .then((ok) => (ok ? undefined : api.tabs.create({ url: api.runtime.getURL('options/options.html#overview') })))
+      .catch(() => undefined);
+  }
 });
 
 api.runtime.onStartup.addListener(() => {

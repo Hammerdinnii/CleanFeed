@@ -92,6 +92,8 @@ const server = createServer((req, res) => {
   if (host === 'tracker.example.test') return send('text/javascript', 'window.__trackerLoaded = true;');
   if (host === 'shop.example.test') return send('text/html', '<!doctype html><div class="upsell" id="up">Buy more</div><script src="http://tracker.example.test:8123/t.js"></script>');
   if (host === 'x.com') return send('text/html', page('x.html'));
+  if (host === 'www.youtube.com') return send('text/html', page('youtube-watch.html'));
+  if (host === 'www.linkedin.com') return send('text/html', page('linkedin.html'));
   if (host === 'www.reddit.com') return send('text/html', page('reddit.html'));
   if (host === 'www.google.com') return send('text/html', page('google.html'));
   res.writeHead(404);
@@ -331,6 +333,26 @@ await test('Google: AI Overview collapsed, sponsored block hidden, results untou
   assert.ok(await hidden(g, '#tads'));
   assert.equal(await g.$eval('#res1', (el) => el.hasAttribute('data-cleanfeed-ai')), false);
   await g.close();
+});
+
+await test('YouTube: synthetic-content disclosure collapses the player; channel blocklist; ad slot hidden', async () => {
+  await bg('data:mutate', { op: 'blockAuthor', entry: { platform: 'youtube', handle: '@SlopChannel', added: Date.now(), source: 'user' } });
+  const y = await ctx.newPage();
+  await y.goto(`http://www.youtube.com:${PORT}/watch?v=abcdefghijk`);
+  await y.waitForFunction(() => document.querySelector('#player-container-outer')?.getAttribute('data-cleanfeed-ai') === 'collapse', null, { timeout: 8000 });
+  await y.waitForFunction(() => document.querySelector('#yt-blocked')?.getAttribute('data-cleanfeed-ai') === 'collapse', null, { timeout: 8000 });
+  assert.equal(await y.$eval('#yt-ok', (el) => el.hasAttribute('data-cleanfeed-ai')), false);
+  assert.ok(await hidden(y, '#yt-ad'));
+  await y.close();
+});
+
+await test('LinkedIn: promoted post hidden, AI-written post collapsed, human post untouched', async () => {
+  const l = await ctx.newPage();
+  await l.goto(`http://www.linkedin.com:${PORT}/feed/`);
+  await l.waitForFunction(() => getComputedStyle(document.querySelector('#li-promo')).display === 'none', null, { timeout: 8000 });
+  await l.waitForFunction(() => document.querySelector('#li-ai')?.getAttribute('data-cleanfeed-ai') === 'collapse', null, { timeout: 8000 });
+  assert.equal(await l.$eval('#li-human', (el) => el.hasAttribute('data-cleanfeed-ai')), false);
+  await l.close();
 });
 
 await test('ONNX model: install, load in offscreen document, classify images', async () => {

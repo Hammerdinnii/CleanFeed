@@ -117,6 +117,13 @@ export function parseCosmeticFilter(line: string): CosmeticResult {
   }
 
   // --- `##`, `#@#`, `#?#`, `#@?#` ---
+  // `##selector { declarations }` style injection (eyeo/AdGuard flavor) → same as :style().
+  const inj = /^(.+?)\s*\{([^{}]*)\}\s*$/.exec(body);
+  if (inj && !generic) {
+    const asStyle = parseCosmeticSelector(`${inj[1]!}:style(${inj[2]!.trim()})`);
+    if (asStyle.kind === 'invalid') return { ok: false, reason: asStyle.reason };
+    return styleOrProc(dom, asStyle, body, exception);
+  }
   const parsed = parseCosmeticSelector(body);
   if (parsed.kind === 'invalid') return { ok: false, reason: parsed.reason };
 

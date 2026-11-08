@@ -1,7 +1,7 @@
 import { compileLines, ruleHash } from '../adblock/compiler';
 import { ALLOW_ID_OFFSET, PRIORITY } from '../adblock/constants';
 import { defaultEnv, parseHeader, preprocess, type ListHeader } from '../adblock/preprocess';
-import { BASE_LIST_ID, USER_LIST_ID } from '../adblock/registry';
+import { USER_LIST_ID } from '../adblock/registry';
 import type { CompileIssue, CompileStats, CompiledCosmetic, DnrRuleBody, PopupData } from '../adblock/types';
 import { api } from '../shared/api';
 import { TARGET, VERSION } from '../shared/env';
@@ -336,9 +336,4 @@ export async function removeList(id: string): Promise<void> {
 /** Enabled list IDs in priority order (user filters are handled separately). */
 export function enabledListIds(subs: Subscription[]): string[] {
   return subs.filter((s) => s.enabled).map((s) => s.id);
-}
-
-/** For a bundled list that was never downloaded, the record shipped with the package. */
-export function hasBundledRuleset(id: string, manifestRulesets: Set<string>): boolean {
-  return manifestRulesets.has(`list_${id}`) || id === BASE_LIST_ID;
 }

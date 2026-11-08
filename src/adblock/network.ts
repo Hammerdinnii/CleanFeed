@@ -124,7 +124,9 @@ export function findOptionsAnchor(s: string): number {
     const after = s.slice(idx + 1);
     // A regex pattern's closing slash must precede the anchor.
     if (OPTION_START.test(after)) {
-      if (s.startsWith('/') && s.lastIndexOf('/', idx) <= 0) {
+      // A "$" inside a /regex/ (no options) must not be taken as the options anchor.
+      const before = s.slice(0, idx);
+      if (s.startsWith('/') && s.endsWith('/') && s.length > 2 && !before.endsWith('/')) {
         idx = s.lastIndexOf('$', idx - 1);
         continue;
       }

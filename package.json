@@ -2,8 +2,7 @@
   "name": "cleanfeed",
   "version": "1.0.0",
   "private": true,
-  "description": "CleanFeed — a Manifest V3 ad blocker and privacy-first, fully local AI content filter for Chrome and Firefox.",
-  "license": "GPL-3.0-or-later",
+  "description": "CleanFeed \u2014 a Manifest V3 ad blocker and privacy-first, fully local AI content filter for Chrome and Firefox.",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
@@ -14,8 +13,10 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "node --import tsx --test \"test/unit/**/*.test.ts\"",
     "test:e2e": "node scripts/build.mjs --target=chrome && node test/e2e/run.mjs",
-    "package": "node scripts/package.mjs",
-    "clean": "rm -rf dist .build"
+    "package": "node scripts/build.mjs && node scripts/package.mjs",
+    "clean": "rm -rf dist .build",
+    "icons": "node scripts/make-icons.mjs",
+    "lint:firefox": "npx --yes web-ext lint -s dist/firefox --self-hosted"
   },
   "devDependencies": {
     "@types/chrome": "0.3.7",
@@ -27,5 +28,6 @@
   },
   "dependencies": {
     "onnxruntime-web": "1.31.1"
-  }
+  },
+  "license": "SEE LICENSE IN README.md"
 }

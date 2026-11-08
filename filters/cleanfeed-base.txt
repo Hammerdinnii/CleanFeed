@@ -6,7 +6,6 @@
 !   uBlock filters once those download.
 ! Expires: 7 days
 ! Homepage: https://github.com/hammerdinnii/CleanFeed
-! License: GPL-3.0-or-later
 !
 ! ============================================================================
 ! Ad networks & exchanges

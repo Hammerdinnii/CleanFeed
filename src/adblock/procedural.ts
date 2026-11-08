@@ -114,7 +114,6 @@ function findClosingParen(s: string, start: number): number {
 /** Basic structural validation of a CSS selector without a DOM. */
 export function looksLikeValidSelector(sel: string): boolean {
   if (!sel.trim()) return false;
-  if (/[{};]/.test(sel) || sel.includes('/*')) return false;
   let paren = 0;
   let bracket = 0;
   let quote: string | null = null;
@@ -125,9 +124,12 @@ export function looksLikeValidSelector(sel: string): boolean {
       continue;
     }
     if (quote) {
+      // Anything goes inside quoted attribute values, e.g. [style^="width:1px;"].
       if (c === quote) quote = null;
       continue;
     }
+    // Outside quotes these could break out of the rule and inject arbitrary CSS.
+    if (c === '{' || c === '}' || c === ';' || (c === '/' && sel[i + 1] === '*')) return false;
     if (c === '"' || c === "'") quote = c;
     else if (c === '(') paren++;
     else if (c === ')') paren--;

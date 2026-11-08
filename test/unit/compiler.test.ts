@@ -216,3 +216,17 @@ test('removeparam rules with the same condition are merged', () => {
   assert.equal(rp.length, 2);
   assert.deepEqual(rp.find((r) => !r.condition.requestDomains)!.action.redirect!.transform!.queryTransform!.removeParams, ['a', 'b']);
 });
+
+test('selectors may contain ; inside quoted attribute values but not outside', () => {
+  const ok = compile('###teaser1[style^="width:autopx;"]');
+  assert.deepEqual(ok.cosmetic.generic, ['#teaser1[style^="width:autopx;"]']);
+  const bad = compile('example.com##div;body{background:red}');
+  assert.equal(bad.cosmetic.specific.length, 0);
+});
+
+test('path patterns starting with / keep their options', () => {
+  const c = compile('/criteo.$domain=~criteo.github.io\n/foo$bar=1/');
+  const r = c.rules.find((x) => x.condition.urlFilter === '/criteo.')!;
+  assert.deepEqual(r.condition.excludedInitiatorDomains, ['criteo.github.io']);
+  assert.ok(c.rules.some((x) => x.condition.regexFilter === 'foo$bar=1'));
+});

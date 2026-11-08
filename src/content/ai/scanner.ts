@@ -10,6 +10,7 @@ import type { ItemInfo } from '../../ai/types';
 import { send, trySend } from '../../shared/messages';
 import { getLocal, onLocalChange, type LocalSchema } from '../../shared/storage';
 import { mergeSettings } from '../../shared/settings';
+import { LRU } from '../../shared/util';
 import type { AiMode, BlockEntry, ImageAnalysis, Settings, Signal, Verdict } from '../../shared/types';
 import type { SiteAdapter } from '../../sites/adapters';
 import { domWatcher } from '../dom-watcher';
@@ -55,6 +56,8 @@ interface Context {
 
 const MAX_IMAGES_PER_ITEM = 4;
 const MAX_INFLIGHT_IMAGES = 4;
+/** On sites without an adapter, analyze at most this many images per page load. */
+const GENERIC_IMAGE_BUDGET = 12;
 
 export class AiScanner {
   private states = new WeakMap<Element, ItemState>();
@@ -68,7 +71,8 @@ export class AiScanner {
   private lastUrl = location.href;
   private imageQueue: (() => Promise<void>)[] = [];
   private inflight = 0;
-  private imageCache = new Map<string, Promise<ImageAnalysis | null>>();
+  private imageCache = new LRU<string, Promise<ImageAnalysis | null>>(1500);
+  private genericImagesLeft = GENERIC_IMAGE_BUDGET;
   private stopped = false;
 
   constructor(
@@ -372,7 +376,10 @@ export class AiScanner {
     const wantMeta = d.metadata && ctx.settings.ai.fetchImageMetadata && !this.adapter.stripsMetadata;
     const wantModel = d.imageModel && ctx.modelInstalled;
     if (!wantMeta && !wantModel) return;
-    if (this.adapter.id === 'generic' && !ctx.settings.ai.genericImages) return;
+    if (this.adapter.id === 'generic') {
+      if (!ctx.settings.ai.genericImages || this.genericImagesLeft <= 0) return;
+      this.genericImagesLeft -= Math.min(item.images.length, MAX_IMAGES_PER_ITEM);
+    }
     st.imagesRequested = true;
     const fp = st.fp;
     const imgs = item.images.slice(0, MAX_IMAGES_PER_ITEM);
