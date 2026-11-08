@@ -201,3 +201,18 @@ test('parse: options anchor ignores $ inside regex values', () => {
     assert.equal(conv.rules.length, 0); // regex removeparam unsupported
   }
 });
+
+test('removeparam never outranks block rules (DNR applies one winner)', () => {
+  const list = compile('$removeparam=utm_source\n||ads.example^');
+  const user = compile('$removeparam=foo', PRIORITY.userOffset);
+  const rp = [...list.rules, ...user.rules].filter((r) => r.action.redirect?.transform);
+  const block = list.rules.find((r) => r.action.type === 'block')!;
+  for (const r of rp) assert.ok(r.priority < block.priority, `removeparam priority ${r.priority} must be < ${block.priority}`);
+});
+
+test('removeparam rules with the same condition are merged', () => {
+  const c = compile('$removeparam=a\n$removeparam=b\n||x.com^$removeparam=c');
+  const rp = c.rules.filter((r) => r.action.redirect?.transform);
+  assert.equal(rp.length, 2);
+  assert.deepEqual(rp.find((r) => !r.condition.requestDomains)!.action.redirect!.transform!.queryTransform!.removeParams, ['a', 'b']);
+});

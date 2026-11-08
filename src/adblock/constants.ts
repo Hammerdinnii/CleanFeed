@@ -2,17 +2,23 @@
  * DNR priority ladder. Higher wins; at equal priority DNR resolves
  * allow > allowAllRequests > block > upgradeScheme > redirect.
  *
- *   block (100) < removeparam (110) < redirect (150) < allow / $document (200)
+ *   removeparam (1) < block (100) < redirect (150) < allow / $document (200)
  *   < $important (300) < user filters (+1000) < per-site allowlist (10000)
  *
  * This mirrors ABP/uBO semantics: `@@` exceptions beat ordinary blocks,
  * `$important` beats exceptions, the user's own filters beat list filters,
  * and the user's "disable on this site" beats everything.
+ *
+ * `$removeparam` rules are deliberately at the very bottom (and never get the
+ * user offset): DNR applies only the single highest-priority matching rule,
+ * and a broad removeparam rule (e.g. `$removeparam=utm_source`) matches every
+ * request — at any higher priority it would win over, and silently cancel,
+ * every block rule even when the URL has no such parameter.
  */
 export const PRIORITY = {
   block: 100,
   csp: 100,
-  removeparam: 110,
+  removeparam: 1,
   redirect: 150,
   allow: 200,
   important: 300,

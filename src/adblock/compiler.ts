@@ -187,6 +187,27 @@ export function mergeAndDedupe(rules: DnrRuleBody[]): DnrRuleBody[] {
   const groups = new Map<string, { template: DnrRuleBody; domains: Set<string> }>();
   const out: DnrRuleBody[] = [];
 
+  // $removeparam rules sharing a condition become one rule with several params.
+  const paramGroups = new Map<string, { rule: DnrRuleBody; params: Set<string> }>();
+  for (const r of rules) {
+    const params = r.action.redirect?.transform?.queryTransform?.removeParams;
+    if (r.action.type !== 'redirect' || !params) continue;
+    const sig = stableStringify({ priority: r.priority, condition: r.condition });
+    let g = paramGroups.get(sig);
+    if (!g) paramGroups.set(sig, (g = { rule: r, params: new Set() }));
+    for (const p of params) g.params.add(p);
+  }
+  if (paramGroups.size) {
+    rules = rules.filter((r) => !(r.action.type === 'redirect' && r.action.redirect?.transform?.queryTransform?.removeParams));
+    for (const g of paramGroups.values()) {
+      rules.push({
+        priority: g.rule.priority,
+        action: { type: 'redirect', redirect: { transform: { queryTransform: { removeParams: [...g.params].sort() } } } },
+        condition: g.rule.condition,
+      });
+    }
+  }
+
   for (const r of rules) {
     const c = r.condition;
     const mergeable = c.requestDomains && !c.urlFilter && !c.regexFilter;

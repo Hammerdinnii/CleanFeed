@@ -97,6 +97,8 @@ export interface DnrStatus {
   regexRules: number;
 }
 
+export type ImageBackend = 'auto' | 'webgpu' | 'wasm';
+
 export interface ModelStatus {
   installed: boolean;
   manifest: ModelManifest | null;
@@ -140,8 +142,9 @@ export interface MessageMap {
   'tab:counts': { req: Record<string, never>; res: { elements: number; ai: number } };
   'tab:refreshAi': { req: Record<string, never>; res: void };
   // background → offscreen
-  'off:analyze': { req: { url: string; metadata: boolean; model: boolean }; res: ImageAnalysis };
-  'off:reload': { req: Record<string, never>; res: ModelStatus };
+  'off:analyze': { req: { url: string; metadata: boolean; model: boolean; backend: ImageBackend }; res: ImageAnalysis };
+  'off:reload': { req: { backend: ImageBackend }; res: ModelStatus };
+  'off:test': { req: { backend: ImageBackend }; res: { ok: boolean; score?: number; backend?: string; ms?: number; error?: string } };
   'off:ping': { req: Record<string, never>; res: boolean };
 }
 

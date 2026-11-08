@@ -12,7 +12,7 @@ import { hostnameFromUrl, isWebUrl } from '../shared/domain';
 import { createLogger, errorMessage } from '../shared/log';
 import { listen, sendToTab } from '../shared/messages';
 import { DEFAULT_SETTINGS } from '../shared/settings';
-import { getOne, setLocal } from '../shared/storage';
+import { getLocal, getOne, setLocal } from '../shared/storage';
 import { idbClear } from '../shared/idb';
 import { handleCss, handleGeneric, handleInit } from './cosmetic-service';
 import { rebuildCosmeticIndex } from './cosmetic-index';
@@ -23,7 +23,7 @@ import { invalidatePopupCache, registerPopupBlocker } from './popups';
 import { forgetTabScriptlets, injectScriptlets } from './scriptlets';
 import { addCounts, forgetTab, getCounts, pollMatchedRules, resetStats, resetTab } from './stats';
 import { mergeSubscriptions, onStateChange, ready, siteState } from './state';
-import { registerAiServices } from './ai-services';
+import { registerAiServices, updateCommunityLists } from './ai-services';
 import { registerContextMenus } from './context-menu';
 import { ALARM_PAUSES, expirePauses, pauseSite } from './pause';
 
@@ -89,6 +89,12 @@ async function updateDueLists(force: boolean, ids?: string[]): Promise<{ updated
   return { updated, errors };
 }
 
+async function refreshCommunityListsIfDue(): Promise<void> {
+  const { communityLists = [] } = await getLocal(['communityLists']);
+  const due = communityLists.some((c) => c.enabled && Date.now() - (c.lastUpdated ?? 0) > 24 * 3600_000);
+  if (due) await updateCommunityLists();
+}
+
 api.runtime.onInstalled.addListener((details) => {
   void initialize(details.reason).catch((e) => log.error('init failed', e));
   registerContextMenus(true);
@@ -102,7 +108,10 @@ api.runtime.onStartup.addListener(() => {
 });
 
 api.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === ALARM_UPDATE) void updateDueLists(false);
+  if (alarm.name === ALARM_UPDATE) {
+    void updateDueLists(false);
+    void refreshCommunityListsIfDue();
+  }
   else if (alarm.name === ALARM_STATS) void pollMatchedRules();
   else if (alarm.name === ALARM_PAUSES) void expirePauses();
 });

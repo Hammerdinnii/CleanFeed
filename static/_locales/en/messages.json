@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "CleanFeed — Ad blocker & AI content filter",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Blocks ads and trackers and filters AI-generated content. 100% local: no telemetry, nothing leaves your browser.",
+    "description": "Extension description"
+  }
+}

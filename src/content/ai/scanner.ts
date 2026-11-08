@@ -134,7 +134,8 @@ export class AiScanner {
       if (!st) continue;
       st.verdict = null;
       st.fp = '';
-      if (st.visible) this.evaluate(el);
+      // Collapsed items are display:none and therefore never "intersecting".
+      if (st.visible || st.ui) this.evaluate(el);
     }
   }
 
@@ -170,7 +171,7 @@ export class AiScanner {
       this.track(el);
       // Extras are re-checked eagerly: their fingerprint depends on page state.
       const st = this.states.get(el);
-      if (st?.visible) this.evaluate(el);
+      if (st && (st.visible || st.ui)) this.evaluate(el);
     }
   }
 
@@ -214,7 +215,7 @@ export class AiScanner {
         continue;
       }
       const st = this.states.get(el);
-      if (st?.visible) this.evaluate(el);
+      if (st && (st.visible || st.ui)) this.evaluate(el);
     }
   }
 
@@ -240,8 +241,10 @@ export class AiScanner {
       return;
     }
     st.item = item;
-    if (ctx.notAi.has(item.key)) return;
-    if (item.author && ctx.trusted.has(`${item.author.platform}:${item.author.handle}`)) return;
+    if (ctx.notAi.has(item.key) || (item.author && ctx.trusted.has(`${item.author.platform}:${item.author.handle}`))) {
+      this.clear(el);
+      return;
+    }
 
     const verdict = this.syncVerdict(item, ctx, st.imageSignals);
     this.apply(el, st, verdict);

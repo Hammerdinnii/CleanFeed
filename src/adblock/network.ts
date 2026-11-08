@@ -564,12 +564,12 @@ export function convertNetworkFilter(f: NetworkFilter, ctx: ConvertContext): Con
     const c: DnrCondition = { ...condition, resourceTypes: types.length ? types : REMOVEPARAM_TYPES };
     if (excluded.length) c.excludedResourceTypes = excluded;
     if (o.removeparam === true) {
-      out.rules.push({ priority: prio(PRIORITY.removeparam), action: { type: 'redirect', redirect: { transform: { query: '' } } }, condition: c });
+      out.rules.push({ priority: PRIORITY.removeparam, action: { type: 'redirect', redirect: { transform: { query: '' } } }, condition: c });
     } else {
       const name = o.removeparam;
       if (name.startsWith('/') || name.startsWith('~') || /[|*]/.test(name)) return { ...out, reason: 'regex removeparam unsupported' };
       out.rules.push({
-        priority: prio(PRIORITY.removeparam),
+        priority: PRIORITY.removeparam,
         action: { type: 'redirect', redirect: { transform: { queryTransform: { removeParams: [name] } } } },
         condition: c,
       });

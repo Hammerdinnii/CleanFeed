@@ -163,7 +163,11 @@ async function buildTarget(target, compiler) {
       if (!existsSync(join(ortSrc, f))) throw new Error(`onnxruntime-web file missing: ${f} (run npm install)`);
       cpSync(join(ortSrc, f), join(ortOut, f));
     }
-    cpSync(join(root, 'node_modules', 'onnxruntime-web', 'LICENSE'), join(ortOut, 'LICENSE'));
+    writeFileSync(
+      join(ortOut, 'NOTICE.txt'),
+      `ONNX Runtime Web ${JSON.parse(readFileSync(join(root, 'node_modules', 'onnxruntime-web', 'package.json'), 'utf8')).version}\n` +
+        'Copyright (c) Microsoft Corporation. Licensed under the MIT License.\nhttps://github.com/microsoft/onnxruntime\n',
+    );
   }
 
   const manifest = buildManifest(target, lists);
